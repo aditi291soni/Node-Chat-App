@@ -1,0 +1,141 @@
+
+<html>
+<head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- Your app title -->
+    <title>Chat App</title>
+    <!-- Path to Framework7 iOS CSS theme styles-->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/framework7/1.6.5/css/framework7.material.min.css">
+    <!-- Path to Framework7 iOS related color styles -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/framework7/1.6.5/css/framework7.material.colors.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="path/to/my-app.css">
+
+    <!-- Path to your custom app icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+        <div class="content-block">
+            <!-- <p>Left panel content goes here</p> -->
+        </div>
+    </div>
+    <!-- Views -->
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+            <div class="pages navbar-fixed ">
+                <!-- Page, "data-page" contains page name -->
+                <div data-page="index" class="page">
+                    <!-- Top Navbar-->
+                    <div class="navbar">
+                        <div class="navbar-inner">
+
+                            <div class="left sliding">
+                                <div class="item-media" style="margin-left:10px; margin-top:10px">
+                                    <img src="http://www.iconarchive.com/download/i102645/graphicloads/flat-finance/person.ico"
+                                        width="44">
+                                </div>
+                                <div class="item-inner" style="margin-left:10px">
+                                    <div class="item-title-row">
+                                        <div class="item-title" style="font-size:18px; line-height:23px"><%= username.username %></div>
+                                    </div>
+                                    <div class="item-subtitle" style="font-size:14px; line-height:15px"></div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="right">
+                                <!-- Right link contains only icon - additional "icon-only" class
+                      Additional "open-panel" class tells app to open panel when we click on this link-->
+                                <a href="#" class="link icon-only"><i class="material-icons"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- messagebar -->
+                    <div class="toolbar messagebar">
+                        
+                        <form id="form"> 
+                        <div class="toolbar-inner">
+                            
+
+                                    <textarea id="text"  placeholder="Write your message here..."></textarea><button  class="link"><i
+                                            class="material-icons color-blue">send</i></button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="page-content messages-content">
+
+                        <div class="messages">
+                            
+                          
+                           
+                        </div>
+
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"
+        integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var socket = io();
+        const submitHandler = (e) => {
+            console.log(e)
+            e.preventDefault();
+            let usermessage = e.target[0].value;
+            console.log(usermessage);
+            socket.emit("message", usermessage) //sabko data bejha
+            document.querySelector(".messages").innerHTML +=` <div class="message message-sent">
+                <div class="message-text">${usermessage}</div>
+                </div>`
+                document.querySelector(".toolbar-inner").textContent=""
+           
+            
+        }
+        socket.on("datamilgya",(data)=>{//
+             document.querySelector(".messages").innerHTML +=`
+              
+                            <div class="message message-received">
+                                <div class="message-name"></div>
+                                <div class="message-text">${data}</div>
+                               
+                            </div>`
+            console.log(data)
+        })
+        
+        document.querySelector("#form").addEventListener("submit",submitHandler)
+
+    </script>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/framework7/1.6.5/js/framework7.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/framework7/1.6.5/js/framework7.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="path/to/my-app.js"></script>
+</body>
+</html>
